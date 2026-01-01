@@ -3,7 +3,7 @@ import re
 """
 🔥 Gen-Z Array Helper Usage (Reference)
 
-vibe nums = pullUp([1, 2, 3, 4, 5])
+vibe nums = pullUp([5, 2, 9, 1])
 
 yap(min(nums))
 yap(Max(nums))
@@ -11,6 +11,9 @@ yap(sum(nums))
 yap(avg(nums))
 yap(mid(nums))
 yap(rev(nums))
+
+yap(sort.asc(nums))   # ascending
+yap(sort.desc(nums))  # descending
 """
 
 SYNTAX_MAP = {
@@ -52,17 +55,29 @@ SYNTAX_MAP = {
     "notTheSameAs": "!=",
 }
 
-# 🔥 Array helpers (NO leading newline, NO escaping bugs)
+# 🔥 Array helpers (stable & backward compatible)
 ARRAY_HELPERS = (
     "def avg(arr):\n"
     "    return sum(arr) / len(arr) if arr else 0\n\n"
+
     "def mid(arr):\n"
     "    n = len(arr)\n"
     "    return arr[n // 2] if n else None\n\n"
+
     "def rev(arr):\n"
     "    return arr[::-1]\n\n"
+
     "def pullUp(arr):\n"
-    "    return list(map(int, arr))\n"
+    "    return list(map(int, arr))\n\n"
+
+    "# 🔥 Gen-Z sort namespace\n"
+    "class sort:\n"
+    "    @staticmethod\n"
+    "    def asc(arr):\n"
+    "        return sorted(arr)\n\n"
+    "    @staticmethod\n"
+    "    def desc(arr):\n"
+    "        return sorted(arr, reverse=True)\n"
 )
 
 def translate(code: str) -> str:
