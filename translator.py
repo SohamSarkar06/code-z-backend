@@ -34,6 +34,9 @@ SYNTAX_MAP = {
     "spillTea(": "print(",
     "sayBro(": "input(",
 
+    # 🔥 array built-ins
+    "Max(": "max(",   # FIX: Gen-Z Max() → python max()
+
     # values
     "frfr": "True",
     "cap": "False",
