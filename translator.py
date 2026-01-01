@@ -5,12 +5,12 @@ import re
 
 vibe nums = pullUp([1, 2, 3, 4, 5])
 
-yap(min(nums))     # smallest element
-yap(Max(nums))     # largest element
-yap(sum(nums))     # sum of elements
-yap(avg(nums))     # average
-yap(mid(nums))     # middle element
-yap(rev(nums))     # reversed array
+yap(min(nums))
+yap(Max(nums))
+yap(sum(nums))
+yap(avg(nums))
+yap(mid(nums))
+yap(rev(nums))
 """
 
 SYNTAX_MAP = {
@@ -35,14 +35,14 @@ SYNTAX_MAP = {
     "sayBro(": "input(",
 
     # 🔥 array built-ins
-    "Max(": "max(",   # FIX: Gen-Z Max() → python max()
+    "Max(": "max(",
 
     # values
     "frfr": "True",
     "cap": "False",
     "ghosted": "None",
 
-    # flow control
+    # flow
     "imOut": "break",
     "nahKeepGoing": "continue",
     "doNothing": "pass",
@@ -52,39 +52,35 @@ SYNTAX_MAP = {
     "notTheSameAs": "!=",
 }
 
-# 🔥 Gen-Z Array Helpers (auto-injected into user code)
-ARRAY_HELPERS = """
-def avg(arr):
-    return sum(arr) / len(arr) if arr else 0
-
-def mid(arr):
-    n = len(arr)
-    return arr[n // 2] if n else None
-
-def rev(arr):
-    return arr[::-1]
-
-def pullUp(arr):
-    return list(map(int, arr))
-"""
+# 🔥 Array helpers (NO leading newline, NO escaping bugs)
+ARRAY_HELPERS = (
+    "def avg(arr):\n"
+    "    return sum(arr) / len(arr) if arr else 0\n\n"
+    "def mid(arr):\n"
+    "    n = len(arr)\n"
+    "    return arr[n // 2] if n else None\n\n"
+    "def rev(arr):\n"
+    "    return arr[::-1]\n\n"
+    "def pullUp(arr):\n"
+    "    return list(map(int, arr))\n"
+)
 
 def translate(code: str) -> str:
-    lines = code.split("\\n")
+    lines = code.split("\n")
     translated_lines = []
 
     for line in lines:
         stripped = line.lstrip()
         indent = line[:len(line) - len(stripped)]
 
-        # vibe → normal variable
         if stripped.startswith("vibe "):
             stripped = stripped.replace("vibe ", "", 1)
 
-        # replace Gen-Z syntax
         for gez, py in SYNTAX_MAP.items():
             stripped = stripped.replace(gez, py)
 
         translated_lines.append(indent + stripped)
 
-    # 🔥 inject array helpers at the top
-    return ARRAY_HELPERS + "\\n\\n" + "\\n".join(translated_lines)
+    user_code = "\n".join(translated_lines).strip()
+
+    return ARRAY_HELPERS + "\n\n" + user_code
